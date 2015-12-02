@@ -1,0 +1,28 @@
+{
+  "name": "libdploy",
+  "version": "1.0.0",
+  "description": "Dploy library",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slidesk/libdploy.git"
+  },
+  "keywords": [
+    "dploy",
+    "slidesk",
+    "ansible"
+  ],
+  "author": "Raphael Medaer <raphael.medaer@straightforward.me>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/slidesk/libdploy/issues"
+  },
+  "homepage": "https://github.com/slidesk/libdploy#readme",
+  "dependencies": {
+    "es6-promisify": "^3.0.0",
+    "js-yaml": "^3.4.6"
+  }
+}
