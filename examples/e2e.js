@@ -1,13 +1,13 @@
 var libdploy = require('../');
 
-var CLUSTER_PATH = 'tmp/clusters/escaux',
-    ROLE_PATH    = 'tmp/roles/database',
-    ROLE_NAME    = 'database',
-    ROLE_VERSION = 'v1.0.0',
+var CLUSTER_PATH  = 'tmp/clusters/escaux',
+    ROLE_PATH     = 'tmp/roles/database',
+    ROLE_NAME     = 'database',
+    ROLE_VERSION  = 'v1.0.0',
     ROLE2_PATH    = 'tmp/roles/monitoring',
     ROLE2_NAME    = 'monitoring',
     ROLE2_VERSION = 'v1.0.0',
-    HOSTNAME     = 'database.example.com';
+    HOSTNAME      = 'database.example.com';
 
 var host,
     role    = new libdploy.Role(ROLE_PATH),
@@ -136,6 +136,7 @@ cluster.initialize()
     return Promise.resolve();
 })
 
+// Remove role from the cluster
 .then(function() {
     return cluster.dropRole(ROLE_NAME, ROLE_VERSION);
 })
@@ -144,21 +145,42 @@ cluster.initialize()
     return Promise.resolve();
 })
 
+// List hosts
 .then(function() {
-    return Promise.reject('Pause');
     return cluster.hosts();
 })
 .then(function(hosts) {
     console.log('Hosts:', hosts);
+    return Promise.resolve();
+})
+
+// Remove a host
+.then(function() {
     return cluster.removeHost(host);
 })
+.then(function(hosts) {
+    console.log('Hosts removed !');
+    return Promise.resolve();
+})
+
+// List hosts again
 .then(function() {
     return cluster.hosts();
 })
 .then(function(hosts) {
     console.log('Hosts:', hosts);
-    return cluster.destroyHost(host.name());
+    return Promise.resolve();
 })
+
+// Drop host
+.then(function(hosts) {
+    return cluster.dropHost(HOSTNAME);
+})
+.then(function(hosts) {
+    console.log('Hosts dropped !');
+    return Promise.resolve();
+})
+
 .then(function() {
     console.log('Finished');
 })
