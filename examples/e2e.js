@@ -7,7 +7,8 @@ var CLUSTER_PATH  = 'tmp/clusters/escaux',
     ROLE2_PATH    = 'tmp/roles/monitoring',
     ROLE2_NAME    = 'monitoring',
     ROLE2_VERSION = 'v1.0.0',
-    HOSTNAME      = 'database.example.com';
+    HOSTNAME      = 'database.example.com',
+    HOST_RENAME   = 'db.example.com';
 
 var host,
     role    = new libdploy.Role(ROLE_PATH),
@@ -154,11 +155,30 @@ cluster.initialize()
     return Promise.resolve();
 })
 
+// Rename a host
+.then(function() {
+    return cluster.renameHost(host, HOST_RENAME);
+})
+.then(function(_host) {
+    host = _host;
+    console.log('Hosts renamed !');
+    return Promise.resolve();
+})
+
+// List hosts
+.then(function() {
+    return cluster.hosts();
+})
+.then(function(hosts) {
+    console.log('Hosts:', hosts);
+    return Promise.resolve();
+})
+
 // Remove a host
 .then(function() {
     return cluster.removeHost(host);
 })
-.then(function(hosts) {
+.then(function() {
     console.log('Hosts removed !');
     return Promise.resolve();
 })
@@ -174,7 +194,7 @@ cluster.initialize()
 
 // Drop host
 .then(function(hosts) {
-    return cluster.dropHost(HOSTNAME);
+    return cluster.dropHost(HOST_RENAME);
 })
 .then(function(hosts) {
     console.log('Hosts dropped !');
@@ -185,5 +205,5 @@ cluster.initialize()
     console.log('Finished');
 })
 .catch(function(err) {
-    console.log('Issue:', err.stack);
+    console.log('Issue:', err, err.stack);
 })
