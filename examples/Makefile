@@ -6,7 +6,7 @@ inspect: tmp
 	tree tmp
 
 # End to end example
-e2e: e2e.js tmp/roles/database tmp/clusters
+e2e: e2e.js tmp/roles/database tmp/roles/monitoring tmp/clusters
 	node e2e.js
 	-cd tmp/clusters/escaux; ansible-playbook -i "database.example.com," -c local site.yml
 
@@ -23,6 +23,20 @@ tmp/roles/database: tmp/roles
 	git -C tmp/roles/database add tasks/main.yml
 	git -C tmp/roles/database commit -m "Add tasks in version 1.0.0"
 	git -C tmp/roles/database checkout "master"
+
+# Fake role "Monitoring"
+tmp/roles/monitoring: tmp/roles
+	mkdir tmp/roles/monitoring
+	git -C tmp/roles/monitoring init
+	touch tmp/roles/monitoring/README
+	git -C tmp/roles/monitoring add README
+	git -C tmp/roles/monitoring commit -m "Initial commit"
+	git -C tmp/roles/monitoring checkout -b "v1.0.0"
+	mkdir tmp/roles/monitoring/tasks
+	cp tasks_example.yml tmp/roles/monitoring/tasks/main.yml
+	git -C tmp/roles/monitoring add tasks/main.yml
+	git -C tmp/roles/monitoring commit -m "Add tasks in version 1.0.0"
+	git -C tmp/roles/monitoring checkout "master"
 
 tmp/roles: tmp
 	mkdir tmp/roles

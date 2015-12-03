@@ -2,11 +2,16 @@ var libdploy = require('../');
 
 var CLUSTER_PATH = 'tmp/clusters/escaux',
     ROLE_PATH    = 'tmp/roles/database',
+    ROLE_NAME    = 'database',
     ROLE_VERSION = 'v1.0.0',
+    ROLE2_PATH    = 'tmp/roles/monitoring',
+    ROLE2_NAME    = 'monitoring',
+    ROLE2_VERSION = 'v1.0.0',
     HOSTNAME     = 'database.example.com';
 
 var host,
     role    = new libdploy.Role(ROLE_PATH),
+    role2   = new libdploy.Role(ROLE2_PATH),
     cluster = new libdploy.Cluster(CLUSTER_PATH);
 
 // Initialize the cluster
@@ -36,6 +41,25 @@ cluster.initialize()
 })
 .then(function() {
     console.log('Role reinstalled !')
+    return Promise.resolve();
+})
+
+// List installed roles
+.then(function() {
+    return cluster.roles();
+})
+.then(function(roles) {
+    console.log('Installed roles:', roles);
+    return Promise.resolve();
+})
+
+
+// Install second role in this cluster
+.then(function() {
+    return cluster.installRole(role2, ROLE2_VERSION);
+})
+.then(function() {
+    console.log('Second role installed !');
     return Promise.resolve();
 })
 
@@ -109,6 +133,14 @@ cluster.initialize()
 })
 .then(function(variables) {
     console.log('Variables:', variables);
+    return Promise.resolve();
+})
+
+.then(function() {
+    return cluster.dropRole(ROLE_NAME, ROLE_VERSION);
+})
+.then(function() {
+    console.log('Role removed !');
     return Promise.resolve();
 })
 
