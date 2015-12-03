@@ -155,13 +155,13 @@ cluster.initialize()
     return Promise.resolve();
 })
 
-// Rename a host
+// Move (rename) a host
 .then(function() {
-    return cluster.renameHost(host, HOST_RENAME);
+    return cluster.moveHost(host, HOST_RENAME);
 })
 .then(function(_host) {
     host = _host;
-    console.log('Hosts renamed !');
+    console.log('Hosts moved !');
     return Promise.resolve();
 })
 
