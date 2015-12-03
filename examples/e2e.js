@@ -89,6 +89,15 @@ c.initialize()
     return Promise.resolve();
 })
 
+// Update roles repositories
+.then(function() {
+    return c.updateRoles();
+})
+.then(function() {
+    console.log('Roles updated...');
+    return Promise.resolve();
+})
+
 
 .then(function() {
     return Promise.reject('Pause');
