@@ -1,11 +1,47 @@
 var Cluster = require('./').Cluster;
+var Role = require('./').Role;
 
 var host;
 var hostname = 'database.example.com';
+var roleversion = 'v1.0.0';
+
+var role = new Role('tmp/roles/database');
 
 var c = new Cluster('tmp/escaux');
 
 c.initialize()
+
+// List versions a role to install in the cluster
+.then(function() {
+    return role.versions();
+})
+.then(function(versions) {
+    console.log('Role versions:', versions);
+    return Promise.resolve();
+})
+
+// Install role in this cluster
+.then(function() {
+    return c.installRole(role, roleversion);
+})
+.then(function() {
+    console.log('Role installed ...');
+    return Promise.resolve();
+})
+
+// Reinstall role should not trigger errors
+.then(function() {
+    return c.installRole(role, roleversion);
+})
+
+// List installed roles
+.then(function() {
+    return c.roles();
+})
+.then(function(roles) {
+    console.log('Roles:', roles);
+    return Promise.resolve();
+})
 
 // Create a new host
 .then(function() {
@@ -24,6 +60,11 @@ c.initialize()
 // Retrieve a Host object from its name
 .then(function() {
     return c.host(host.name());
+})
+
+// Add role to the host
+.then(function() {
+    return host.setRole(role, roleversion, {});
 })
 
 // Set host variables
@@ -50,7 +91,7 @@ c.initialize()
 
 
 .then(function() {
-    // return Promise.reject('Pause');
+    return Promise.reject('Pause');
     return c.hosts();
 })
 .then(function(hosts) {

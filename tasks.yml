@@ -1,0 +1,5 @@
+---
+- name: Show me the date
+  command: date
+- name: Say Hello !
+  command: echo Hello
