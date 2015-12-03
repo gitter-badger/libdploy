@@ -1,17 +1,18 @@
-var Cluster = require('./').Cluster;
-var Role = require('./').Role;
+var libdploy = require('../');
 
-var host;
-var hostname = 'database.example.com';
-var roleversion = 'v1.0.0';
+var CLUSTER_PATH = 'tmp/clusters/escaux',
+    ROLE_PATH    = 'tmp/roles/database',
+    ROLE_VERSION = 'v1.0.0',
+    HOSTNAME     = 'database.example.com';
 
-var role = new Role('tmp/roles/database');
+var host,
+    role    = new libdploy.Role(ROLE_PATH),
+    cluster = new libdploy.Cluster(CLUSTER_PATH);
 
-var c = new Cluster('tmp/escaux');
+// Initialize the cluster
+cluster.initialize()
 
-c.initialize()
-
-// List versions a role to install in the cluster
+// List versions of role to install in the cluster
 .then(function() {
     return role.versions();
 })
@@ -22,49 +23,71 @@ c.initialize()
 
 // Install role in this cluster
 .then(function() {
-    return c.installRole(role, roleversion);
+    return cluster.installRole(role, ROLE_VERSION);
 })
 .then(function() {
-    console.log('Role installed ...');
+    console.log('Role installed !');
     return Promise.resolve();
 })
 
 // Reinstall role should not trigger errors
 .then(function() {
-    return c.installRole(role, roleversion);
+    return cluster.installRole(role, ROLE_VERSION);
+})
+.then(function() {
+    console.log('Role reinstalled !')
+    return Promise.resolve();
 })
 
 // List installed roles
 .then(function() {
-    return c.roles();
+    return cluster.roles();
 })
 .then(function(roles) {
-    console.log('Roles:', roles);
+    console.log('Installed roles:', roles);
+    return Promise.resolve();
+})
+
+// Update installed roles
+.then(function() {
+    return cluster.updateRoles();
+})
+.then(function() {
+    console.log('Roles updated !');
     return Promise.resolve();
 })
 
 // Create a new host
 .then(function() {
-    return c.createHost(hostname);
+    return cluster.createHost(HOSTNAME);
 })
 .then(function(_host) {
     host = _host;
+    console.log('Host created:', host);
     return Promise.resolve();
 })
 
-// Add a host in the cluster
+// Add created host in the cluster
 .then(function() {
-    return c.addHost(host);
+    return cluster.addHost(host);
+})
+.then(function() {
+    console.log('Host added in cluster !');
+    return Promise.resolve();
 })
 
 // Retrieve a Host object from its name
 .then(function() {
-    return c.host(host.name());
+    return cluster.host(HOSTNAME);
+})
+.then(function(host) {
+    console.log('Host retrieve from name:', host);
+    return Promise.resolve();
 })
 
-// Add role to the host
+// Add role to the host with empty parameter set
 .then(function() {
-    return host.setRole(role, roleversion, {});
+    return host.setRole(role, ROLE_VERSION, {});
 })
 
 // Set host variables
@@ -89,30 +112,20 @@ c.initialize()
     return Promise.resolve();
 })
 
-// Update roles repositories
-.then(function() {
-    return c.updateRoles();
-})
-.then(function() {
-    console.log('Roles updated...');
-    return Promise.resolve();
-})
-
-
 .then(function() {
     return Promise.reject('Pause');
-    return c.hosts();
+    return cluster.hosts();
 })
 .then(function(hosts) {
     console.log('Hosts:', hosts);
-    return c.removeHost(host);
+    return cluster.removeHost(host);
 })
 .then(function() {
-    return c.hosts();
+    return cluster.hosts();
 })
 .then(function(hosts) {
     console.log('Hosts:', hosts);
-    return c.destroyHost(host.name());
+    return cluster.destroyHost(host.name());
 })
 .then(function() {
     console.log('Finished');
