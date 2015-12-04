@@ -139,7 +139,7 @@ cluster.initialize()
 
 // Remove role from the cluster
 .then(function() {
-    return cluster.dropRole(ROLE_NAME, ROLE_VERSION);
+    return cluster.dropRole(role, ROLE_VERSION);
 })
 .then(function() {
     console.log('Role removed !');
