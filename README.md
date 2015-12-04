@@ -52,3 +52,6 @@ host.setRole(role, 'v1.0.0', {
 ```
 
 That's it ! You have your infrastructure.
+
+
+Made with ♥ by [Raphael Medaer](mailto:raphael.medaer@straightforward.me)
