@@ -169,9 +169,9 @@ cluster.initialize()
     return Promise.resolve();
 })
 
-// Move (rename) a host
+// Rename a host
 .then(function() {
-    return cluster.moveHost(host, HOST_RENAME);
+    return cluster.renameHost(host, HOST_RENAME);
 })
 .then(function(_host) {
     host = _host;
