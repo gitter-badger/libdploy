@@ -208,6 +208,15 @@ dploy.clusters.create(CLUSTER_NAME)
     return Promise.resolve();
 })
 
+// Drop cluster
+.then(function() {
+    return dploy.clusters.drop(CLUSTER_NAME);
+})
+.then(function() {
+    console.log('Cluster dropped !');
+    return Promise.resolve();
+})
+
 .then(function() {
     console.log('Finished');
 })

@@ -8,7 +8,6 @@ inspect: tmp
 # End to end example
 e2e: e2e.js tmp/roles/database tmp/roles/monitoring tmp/clusters
 	node e2e.js
-	-cd tmp/clusters/escaux; ansible-playbook -i "database.example.com," -c local site.yml
 
 # Fake role "Database"
 tmp/roles/database: tmp/roles
