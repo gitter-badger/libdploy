@@ -135,6 +135,20 @@ dploy.clusters.create(CLUSTER_NAME)
     });
 })
 
+// Set host variables
+.then(function() {
+    return host.setVariables({
+        test: {
+            key: 'Another one',
+            number: 58
+        },
+        array: [
+            'item',
+            'second'
+        ]
+    });
+})
+
 // Get host variables
 .then(function() {
     return host.variables();
@@ -162,9 +176,9 @@ dploy.clusters.create(CLUSTER_NAME)
     return Promise.resolve();
 })
 
-// Move (rename) a host
+// Rename a host
 .then(function() {
-    return cluster.moveHost(host, HOSTRENAME);
+    return cluster.renameHost(host, HOSTRENAME);
 })
 .then(function(_host) {
     host = _host;
@@ -223,3 +237,6 @@ dploy.clusters.create(CLUSTER_NAME)
 .catch(function(err) {
     console.log('Issue:', err, err.stack);
 })
+.finally(function() {
+    // locker.unref();
+});
