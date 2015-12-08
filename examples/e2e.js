@@ -1,3 +1,5 @@
+
+
 var libdploy = require('../');
 
 var CLUSTER_PATH  = 'tmp/clusters/escaux',
@@ -11,9 +13,10 @@ var CLUSTER_PATH  = 'tmp/clusters/escaux',
     HOST_RENAME   = 'db.example.com';
 
 var host,
+    locker  = new libdploy.RedisLocker(),
     role    = new libdploy.Role(ROLE_PATH),
     role2   = new libdploy.Role(ROLE2_PATH),
-    cluster = new libdploy.Cluster(CLUSTER_PATH);
+    cluster = new libdploy.Cluster(CLUSTER_PATH, locker);
 
 // Initialize the cluster
 cluster.initialize()
@@ -216,11 +219,11 @@ cluster.initialize()
 })
 
 .then(function() {
-    libdploy.Locker.getInstance().unref();
     console.log('Finished');
 })
 .catch(function(err) {
-    libdploy.Locker.getInstance().unref();
-
     console.log('Issue:', err, err.stack);
+})
+.finally(function() {
+    locker.unref();
 });
