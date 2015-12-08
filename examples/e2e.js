@@ -128,6 +128,20 @@ cluster.initialize()
     });
 })
 
+// Set host variables
+.then(function() {
+    return host.setVariables({
+        test: {
+            key: 'Another one',
+            number: 58
+        },
+        array: [
+            'item',
+            'second'
+        ]
+    });
+})
+
 // Get host variables
 .then(function() {
     return host.variables();
@@ -202,8 +216,11 @@ cluster.initialize()
 })
 
 .then(function() {
+    libdploy.Locker.getInstance().unref();
     console.log('Finished');
 })
 .catch(function(err) {
+    libdploy.Locker.getInstance().unref();
+
     console.log('Issue:', err, err.stack);
-})
+});
