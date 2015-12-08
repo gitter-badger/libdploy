@@ -1,6 +1,10 @@
-var libdploy = require('../');
+var LibDploy = require('../');
 
-var CLUSTER_PATH  = 'tmp/clusters/escaux',
+var dploy = new LibDploy({
+    directory: 'tmp/'
+});
+
+var CLUSTER_NAME  = 'escaux',
     ROLE_PATH     = 'tmp/roles/database',
     ROLE_NAME     = 'database',
     ROLE_VERSION  = 'v1.0.0',
@@ -8,15 +12,18 @@ var CLUSTER_PATH  = 'tmp/clusters/escaux',
     ROLE2_NAME    = 'monitoring',
     ROLE2_VERSION = 'v1.0.0',
     HOSTNAME      = 'database.example.com',
-    HOST_RENAME   = 'db.example.com';
+    HOSTRENAME    = 'db.example.com';
 
 var host,
-    role    = new libdploy.Role(ROLE_PATH),
-    role2   = new libdploy.Role(ROLE2_PATH),
-    cluster = new libdploy.Cluster(CLUSTER_PATH);
+    cluster,
+    role    = new LibDploy.Role(ROLE_PATH),
+    role2   = new LibDploy.Role(ROLE2_PATH);
 
-// Initialize the cluster
-cluster.initialize()
+// Create a new cluster
+dploy.clusters.create(CLUSTER_NAME)
+.then(function(_cluster) {
+    cluster = _cluster;
+})
 
 // List versions of role to install in the cluster
 .then(function() {
@@ -157,7 +164,7 @@ cluster.initialize()
 
 // Move (rename) a host
 .then(function() {
-    return cluster.moveHost(host, HOST_RENAME);
+    return cluster.moveHost(host, HOSTRENAME);
 })
 .then(function(_host) {
     host = _host;
@@ -194,7 +201,7 @@ cluster.initialize()
 
 // Drop host
 .then(function(hosts) {
-    return cluster.dropHost(HOST_RENAME);
+    return cluster.dropHost(HOSTRENAME);
 })
 .then(function(hosts) {
     console.log('Hosts dropped !');
