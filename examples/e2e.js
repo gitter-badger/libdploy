@@ -236,7 +236,4 @@ dploy.clusters.create(CLUSTER_NAME)
 })
 .catch(function(err) {
     console.log('Issue:', err, err.stack);
-})
-.finally(function() {
-    // locker.unref();
 });
