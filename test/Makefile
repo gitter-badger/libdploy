@@ -2,16 +2,19 @@
 # Author: Raphael Medaer <raphael.medaer@straightforward.me>
 # Date: December, 2015
 
-.PHONY: all mocha clean
-
+.PHONY: all lock cluster clean
 
 # Roles to generate
 ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring
 
-all: mocha
 
-mocha: $(ROLE_FIXTURES) fixture/clusters
-	mocha -b
+all: clean lock cluster
+
+lock: fixture
+	mocha -b lock.js
+
+cluster: $(ROLE_FIXTURES) fixture/clusters
+	mocha -b cluster.js
 
 fixture:
 	mkdir -p fixture
