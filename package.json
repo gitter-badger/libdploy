@@ -4,7 +4,7 @@
   "description": "Dploy library",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha -b"
+    "test": "make -C test/"
   },
   "repository": {
     "type": "git",
