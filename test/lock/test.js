@@ -1,12 +1,9 @@
-var FlockLocker = require('../../lib/lock/flocklocker.js');
+var Lock = require('../../lib/utils/lock.js');
 
 var DIRECTORY = 'lock';
 
-var locker = new FlockLocker({ path: DIRECTORY, retry: 0, timeout: 0 });
-
-var alphaLock = locker.createLock(),
-    betaLock = locker.createLock(),
-    alphaKey = 'ALPHA';
+var alphaLock = new Lock('lock/mylock', 0, 0),
+    betaLock  = new Lock('lock/mylock', 0, 0);
 
 describe('Unlock nothing', function() {
     it ('#it should throw an error upon release a free lock', function () {
@@ -25,7 +22,7 @@ describe('Unlock nothing', function() {
 
 describe('Lock & Release & Release', function () {
     it('#it should acquire a lock', function () {
-        return alphaLock.acquire(alphaKey);
+        return alphaLock.acquire();
     });
     it ('#it should release the lock', function () {
         return alphaLock.release();
@@ -45,7 +42,7 @@ describe('Lock & Release & Release', function () {
 
 describe('Lock & Unlock', function() {
     it('#it should acquire a lock', function () {
-        return alphaLock.acquire(alphaKey);
+        return alphaLock.acquire();
     });
     it ('#it should release the lock', function () {
         return alphaLock.release();
@@ -54,13 +51,13 @@ describe('Lock & Unlock', function() {
 
 describe('Lock & Unlock & Unlock', function () {
     it('#it should acquire a lock', function () {
-        return alphaLock.acquire(alphaKey);
+        return alphaLock.acquire();
     });
     it ('#it should release the lock', function () {
         return alphaLock.release();
     });
     it('#it should acquire a lock', function () {
-        return alphaLock.acquire(alphaKey);
+        return alphaLock.acquire();
     });
     it ('#it should release the lock', function () {
         return alphaLock.release();
@@ -70,10 +67,10 @@ describe('Lock & Unlock & Unlock', function () {
 
 describe('Lock & Same Lock & Different Lock & Release', function () {
     it('#it should acquire a lock', function () {
-        return alphaLock.acquire(alphaKey);
+        return alphaLock.acquire();
     });
     it('#the different should fail to acquire the lock', function () {
-        return alphaLock.acquire(alphaKey)
+        return alphaLock.acquire()
         .then(
             function () {
                 return Promise.reject('It should fail to obtain the lock');
@@ -84,7 +81,7 @@ describe('Lock & Same Lock & Different Lock & Release', function () {
         )
     });
     it('#a different lock object should fail to acquire the lock', function () {
-        return betaLock.acquire(alphaKey)
+        return betaLock.acquire()
         .then(
             function () {
                 return Promise.reject('It should fail to obtain the lock');
@@ -98,15 +95,10 @@ describe('Lock & Same Lock & Different Lock & Release', function () {
         return alphaLock.release();
     });
     it ('#a different lock should be able to acquire the lock', function () {
-        return betaLock.acquire(alphaKey);
+        return betaLock.acquire();
     });
     it ('#it should release the lock', function () {
         return betaLock.release();
     });
 
 });
-
-
-
-
-
