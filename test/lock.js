@@ -69,17 +69,6 @@ describe('Lock & Same Lock & Different Lock & Release', function () {
     it('#it should acquire a lock', function () {
         return alphaLock.acquire();
     });
-    it('#the different should fail to acquire the lock', function () {
-        return alphaLock.acquire()
-        .then(
-            function () {
-                return Promise.reject('It should fail to obtain the lock');
-            },
-            function () {
-                // Expected result here
-            }
-        )
-    });
     it('#a different lock object should fail to acquire the lock', function () {
         return betaLock.acquire()
         .then(
