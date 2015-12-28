@@ -4,10 +4,11 @@ var assert   = require('assert'),
     LibDploy = require('../');
 
 
-var cluster = new LibDploy.Cluster(
-    path.join('outcome', 'cluster', 'local'),
-    path.join('outcome', 'cluster', 'bare'),
-    path.join('fixture', 'git-tmpl'));
+var PATH_LOCAL = path.join('outcome', 'cluster', 'local'),
+    PATH_BARE  = path.join('outcome', 'cluster', 'bare'),
+    PATH_TMPL  = path.join('fixture', 'git-tmpl');
+
+var cluster = new LibDploy.Cluster(PATH_LOCAL, PATH_BARE, PATH_TMPL);
 
 describe('Cluster', function() {
     describe('#initialize()', function() {
@@ -16,6 +17,9 @@ describe('Cluster', function() {
             .then(function() {
                 return assert.ok(true);
             });
+        });
+        it('should contains two directories: local and bare.', function() {
+            return assert.ok(fs.statSync(PATH_LOCAL) && fs.statSync(PATH_BARE));
         });
     });
 });
