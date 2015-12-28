@@ -5,8 +5,8 @@ var assert   = require('assert'),
 
 
 var cluster = new LibDploy.Cluster(
-    path.join('outcome', 'mycluster'),
-    path.join('outcome', 'mycluster_bare'),
+    path.join('outcome', 'cluster', 'local'),
+    path.join('outcome', 'cluster', 'bare'),
     path.join('fixture', 'git-tmpl'));
 
 describe('Cluster', function() {

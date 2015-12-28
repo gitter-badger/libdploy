@@ -10,20 +10,25 @@ ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring
 
 all: clean lock cluster
 
-lock: fixture
+lock: outcome
 	mocha -b lock.js
 
-cluster: $(ROLE_FIXTURES) fixture/clusters
+cluster: outcome/cluster
 	mocha -b cluster.js
+
+roles: $(ROLE_FIXTURES)
+
+outcome:
+	mkdir -p outcome
+
+outcome/cluster: outcome
+	mkdir -p outcome/cluster
 
 fixture:
 	mkdir -p fixture
 
 fixture/roles: fixture
 	mkdir -p fixture/roles
-
-fixture/clusters: fixture
-	mkdir -p fixture/clusters
 
 # Generate Role fixtures
 $(ROLE_FIXTURES):
@@ -47,4 +52,5 @@ $(ROLE_FIXTURES):
 	git -C $@ checkout "master"
 
 clean:
-	rm -rf fixture
+	rm -rf fixture/roles
+	rm -rf outcome

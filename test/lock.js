@@ -2,8 +2,8 @@ var Lock = require('../lib/utils/lock.js');
 
 var DIRECTORY = 'lock';
 
-var alphaLock = new Lock('fixture/lock', 0, 0),
-    betaLock  = new Lock('fixture/lock', 0, 0);
+var alphaLock = new Lock('outcome/lock', 0, 0),
+    betaLock  = new Lock('outcome/lock', 0, 0);
 
 describe('Unlock nothing', function() {
     it ('#it should throw an error upon release a free lock', function () {
