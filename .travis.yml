@@ -1,5 +1,7 @@
 language: node_js
 
+sudo: required
+
 node_js:
   - "5.1.1"
 
@@ -8,6 +10,6 @@ addons:
     packages:
       - make
       - git
-      - gcc-4.9
-      - g++-4.9
+      - gcc-4.8
+      - g++-4.8
       - lcov
