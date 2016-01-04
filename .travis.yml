@@ -3,7 +3,15 @@ language: node_js
 node_js:
   - "5.1.1"
 
+before_install: sudo npm install -g nodegit^0.5.0
+
+install: npm install
+
 addons:
   apt:
     packages:
       - make
+      - git
+      - gcc-4.9
+      - g++-4.9
+      - lcov
