@@ -2,19 +2,22 @@
 # Author: Raphael Medaer <raphael.medaer@straightforward.me>
 # Date: December, 2015
 
-.PHONY: all lock cluster clean
+.PHONY: all lock cluster site clean
 
 # Roles to generate
 ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring
 
 
-all: clean lock cluster
+all: clean lock site cluster
 
 lock: outcome
 	mocha -b lock.js
 
 cluster: outcome/cluster
 	mocha -b cluster.js
+
+site: outcome/site
+	mocha -b site.js
 
 roles: $(ROLE_FIXTURES)
 
@@ -23,6 +26,9 @@ outcome:
 
 outcome/cluster: outcome
 	mkdir -p outcome/cluster
+
+outcome/site: outcome
+	mkdir -p outcome/site
 
 fixture:
 	mkdir -p fixture
