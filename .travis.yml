@@ -5,6 +5,9 @@ sudo: required
 node_js:
   - "5.1.1"
 
+env:
+  - CXX=g++-4.8
+
 addons:
   apt:
     sources:
