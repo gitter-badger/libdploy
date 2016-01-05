@@ -40,3 +40,17 @@ describe('#deploy()', function() {
         return true;    // TODO
     });
 });
+
+describe('#drop', function() {
+    it('should drop the Cluster with both local and bare repositories', function() {
+        return cluster.drop();
+    });
+    it('should miss the Cluster directories.', function() {
+        assert.throws(function() {
+            fs.statSync(PATH_LOCAL);
+        });
+        assert.throws(function() {
+            fs.statSync(PATH_BARE);
+        });
+    });
+});
