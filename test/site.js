@@ -4,25 +4,39 @@ var assert   = require('assert'),
     LibDploy = require('../');
 
 
-var PATH_ALPHA = path.join('outcome', 'site', 'alpha'),
+var PATH_LOCAL = path.join('outcome', 'site', 'local'),
+    PATH_BARE  = path.join('outcome', 'site', 'bare'),
+    PATH_TMPL  = path.join('fixture', 'git-tmpl'),
     HOST_ALPHA = 'example',
     CFG_EXT    = '.yml';
 
+
 // Instanciate a Site object before test it !
-var site = new LibDploy.Site(PATH_ALPHA);
+var site = new LibDploy.Site(PATH_LOCAL, PATH_BARE, PATH_TMPL);
+
 
 /**
- * Initialize a Site by creating several directoires and configuration files.
+ * Test the Site initialization. When the API initialize a Site it should
+ * create two different directories:
+ *   - The local repository contains the most recent and NON effective
+ *     modifications of this site. It will be pushed to the bare repository.
+ *   - The bare repository contains the most recent and EFFECTIVE modifications.
+ *     Depending the template (3rd argument), this repository will be pulled or
+ *     pushed to/by ansible client.
+ * @NOTE Site#initialize() needs to be tested before !!
  */
 describe('#initialize()', function() {
     it('should initialize the Site.', function() {
         return site.initialize();
     });
-    it('should create a site directory with a specific tree.', function() {
-        fs.statSync(PATH_ALPHA);
-        fs.statSync(path.join(PATH_ALPHA, 'roles'));
-        fs.statSync(path.join(PATH_ALPHA, 'hosts'));
-        fs.statSync(path.join(PATH_ALPHA, 'site.yml'));
+    it('should create two directories: local and bare.', function() {
+        fs.statSync(PATH_LOCAL);
+        fs.statSync(PATH_BARE);
+    });
+    it('should create a local site directory with a specific tree.', function() {
+        fs.statSync(path.join(PATH_LOCAL, 'roles'));
+        fs.statSync(path.join(PATH_LOCAL, 'hosts'));
+        fs.statSync(path.join(PATH_LOCAL, 'site.yml'));
     });
 });
 
@@ -37,7 +51,7 @@ describe('#hosts() [empty]', function() {
 
 /**
  * Test both `createHost` and `addHost` functions. It should create and add a
- * new host in this Site.
+ * new host in this AbstractSite.
  * @NOTE Host#initialize() needs to be tested before !!
  */
 describe(['#createHost()', '#addHost()'], function() {
@@ -49,7 +63,7 @@ describe(['#createHost()', '#addHost()'], function() {
         });
     });
     it('should contain a host configuration file.', function() {
-        fs.statSync(path.join(PATH_ALPHA, 'hosts', HOST_ALPHA + CFG_EXT));
+        fs.statSync(path.join(PATH_LOCAL, 'hosts', HOST_ALPHA + CFG_EXT));
     });
     // TODO check site.yml
 });
@@ -73,7 +87,7 @@ describe(['#dropHost()', '#removeHost()'], function() {
     });
     it('should contain a host configuration file.', function() {
         return assert.throws(function() {
-            fs.statSync(path.join(PATH_ALPHA, 'hosts', HOST_ALPHA + CFG_EXT));
+            fs.statSync(path.join(PATH_LOCAL, 'hosts', HOST_ALPHA + CFG_EXT));
         });
     });
     // TODO check site.yml
@@ -88,13 +102,25 @@ describe('#hosts() [empty]', function() {
     });
 });
 
-describe('#drop()', function() {
-    it('should drop the Site.', function() {
+/**
+ * TODO test deploy method
+ */
+describe('#deploy()', function() {
+    it('should deploy the Site repository from local to bare', function() {
+        return true;    // TODO
+    });
+});
+
+describe('#drop', function() {
+    it('should drop the Site with both local and bare repositories', function() {
         return site.drop();
     });
-    it('should miss the site directory.', function() {
-        return assert.throws(function() {
-            fs.statSync(PATH_ALPHA);
+    it('should miss the Site directories.', function() {
+        assert.throws(function() {
+            fs.statSync(PATH_LOCAL);
+        });
+        assert.throws(function() {
+            fs.statSync(PATH_BARE);
         });
     });
 });
