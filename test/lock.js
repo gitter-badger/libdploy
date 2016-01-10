@@ -1,21 +1,19 @@
 var Lock = require('../lib/utils/lock.js');
 
-var DIRECTORY = 'lock';
+var LOCK_FILE = 'outcome/lock';
 
-var alphaLock = new Lock('outcome/lock', 0, 0),
-    betaLock  = new Lock('outcome/lock', 0, 0);
+var alphaLock = new Lock(LOCK_FILE, 0, 0),
+    betaLock  = new Lock(LOCK_FILE, 0, 0);
 
 describe('Unlock nothing', function() {
     it ('#it should throw an error upon release a free lock', function () {
         return alphaLock.release()
-        .then(
-            function () {
-                return Promise.reject('You should not be able to release a free lock');
-            },
-            function (err) {
-                // Expected result here
-            }
-        )
+        .then(function () {
+            return Promise.reject(
+                'You should not be able to release a free lock');
+        }, function () {
+            // Expected result here
+        });
     });
 });
 
@@ -31,7 +29,8 @@ describe('Lock & Release & Release', function () {
         return alphaLock.release()
         .then(
             function () {
-                return Promise.reject('You should not be able to release a free lock');
+                return Promise.reject(
+                    'You should not be able to release a free lock');
             },
             function () {
                 // Expected result here
@@ -71,14 +70,11 @@ describe('Lock & Same Lock & Different Lock & Release', function () {
     });
     it('#a different lock object should fail to acquire the lock', function () {
         return betaLock.acquire()
-        .then(
-            function () {
-                return Promise.reject('It should fail to obtain the lock');
-            },
-            function () {
-                // Expected result here
-            }
-        )
+        .then(function () {
+            return Promise.reject('It should fail to obtain the lock');
+        }, function () {
+            // Expected result here
+        });
     });
     it ('#it should release the lock', function () {
         return alphaLock.release();

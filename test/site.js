@@ -33,7 +33,7 @@ describe('#initialize()', function() {
         fs.statSync(PATH_LOCAL);
         fs.statSync(PATH_BARE);
     });
-    it('should create a local site directory with a specific tree.', function() {
+    it('should create a local site directory with specific tree.', function() {
         fs.statSync(path.join(PATH_LOCAL, 'roles'));
         fs.statSync(path.join(PATH_LOCAL, 'hosts'));
         fs.statSync(path.join(PATH_LOCAL, 'site.yml'));
@@ -103,7 +103,7 @@ describe('#hosts() [empty]', function() {
 });
 
 /**
- * TODO test deploy method
+ * We are validating deploy function by checking result of `post-receive` hook.
  */
 describe('#deploy()', function() {
     this.timeout(20000);
@@ -117,7 +117,7 @@ describe('#deploy()', function() {
 });
 
 describe('#drop', function() {
-    it('should drop the Site with both local and bare repositories', function() {
+    it('should drop the Site with local and bare repositories', function() {
         return site.drop();
     });
     it('should miss the Site directories.', function() {

@@ -8,7 +8,10 @@
 ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring
 
 
-all: clean lock site
+all: clean lint lock site
+
+lint:
+	jshint -c ../.jshintrc ../**/*.js
 
 lock: outcome
 	mocha -b lock.js
