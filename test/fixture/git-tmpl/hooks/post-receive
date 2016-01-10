@@ -1,3 +1,4 @@
 #!/bin/sh
 
 echo "Post receive hook reached"
+echo "OK" > validation

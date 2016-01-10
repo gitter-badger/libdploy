@@ -106,8 +106,13 @@ describe('#hosts() [empty]', function() {
  * TODO test deploy method
  */
 describe('#deploy()', function() {
+    this.timeout(20000);
+
     it('should deploy the Site repository from local to bare', function() {
-        return true;    // TODO
+        return site.deploy();
+    });
+    it('check bare repository', function() {
+        return fs.statSync(path.join(PATH_BARE, 'validation'));
     });
 });
 
