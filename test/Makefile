@@ -2,13 +2,13 @@
 # Author: Raphael Medaer <raphael.medaer@straightforward.me>
 # Date: December, 2015
 
-.PHONY: all lock site clean
+.PHONY: all roles lock site example clean
 
 # Roles to generate
-ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring
+ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring fixture/roles/example
 
 
-all: clean lint lock site
+all: clean lint lock site example
 
 lint:
 	jshint -c ../.jshintrc ../**/*.js
@@ -16,8 +16,11 @@ lint:
 lock: outcome
 	mocha -b lock.js
 
-site: outcome/site
+site: outcome/site roles
 	mocha -b site.js
+
+example: outcome/example roles
+	node example.js
 
 roles: $(ROLE_FIXTURES)
 
@@ -26,6 +29,9 @@ outcome:
 
 outcome/site: outcome
 	mkdir -p outcome/site
+
+outcome/example: outcome
+	mkdir -p outcome/example
 
 fixture:
 	mkdir -p fixture

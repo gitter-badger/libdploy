@@ -4,15 +4,19 @@ var assert   = require('assert'),
     LibDploy = require('../');
 
 
-var PATH_LOCAL = path.join('outcome', 'site', 'local'),
-    PATH_BARE  = path.join('outcome', 'site', 'bare'),
-    PATH_TMPL  = path.join('fixture', 'git-tmpl'),
-    HOST_ALPHA = 'example',
-    CFG_EXT    = '.yml';
+var ROLE_NAME    = 'example',
+    PATH_LOCAL   = path.join('outcome', 'site', 'local'),
+    PATH_BARE    = path.join('outcome', 'site', 'bare'),
+    PATH_TMPL    = path.join('fixture', 'git-tmpl'),
+    PATH_ROLE    = path.join('fixture', 'roles', ROLE_NAME),
+    HOST_ALPHA   = 'example',
+    CFG_EXT      = '.yml',
+    ROLE_VERSION = 'v1.0.0';
 
 
 // Instanciate a Site object before test it !
-var site = new LibDploy.Site(PATH_LOCAL, PATH_BARE, PATH_TMPL);
+var site = new LibDploy.Site(PATH_LOCAL, PATH_BARE, PATH_TMPL),
+    role = new LibDploy.Role(PATH_ROLE);
 
 
 /**
@@ -102,6 +106,26 @@ describe('#hosts() [empty]', function() {
     });
 });
 
+
+describe('#roles() [empty]', function() {
+    it('should list roles installed on the site: an empty array.', function() {
+        return site.roles()
+        .then(function(result) {
+            assert.deepEqual(result, []);
+        });
+    });
+});
+
+describe('#installRole', function() {
+    it('should install a role on the site.', function() {
+        return site.installRole(role, ROLE_VERSION);
+    });
+    it('check cloned role repository', function() {
+        return fs.statSync(path.join(
+            PATH_LOCAL, 'roles', ROLE_NAME, ROLE_VERSION));
+    });
+});
+
 /**
  * We are validating deploy function by checking result of `post-receive` hook.
  */
@@ -116,7 +140,7 @@ describe('#deploy()', function() {
     });
 });
 
-describe('#drop', function() {
+describe('#drop()', function() {
     it('should drop the Site with local and bare repositories', function() {
         return site.drop();
     });
