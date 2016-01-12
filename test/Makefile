@@ -45,6 +45,10 @@ $(ROLE_FIXTURES):
 	mkdir -p $@
 	git -C $@ init
 
+	# Set default user for this Git repository
+	git -C $@ config user.email "dev@slidesk.org"
+	git -C $@ config user.name "Slidesk Developer"
+
 	# Fill in master branch with a Readme file
 	touch $@/README
 	git -C $@ add README
