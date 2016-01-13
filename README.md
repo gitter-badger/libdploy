@@ -1,5 +1,7 @@
 # libdploy
 
+_Project state:_ [![Build Status](https://travis-ci.org/Slidesk/libdploy.svg?branch=develop)](https://travis-ci.org/Slidesk/libdploy)
+
 This package contains Dploy library. It has been made in scope of Slidesk.
 It's using Ansible in backend to manage and deploy softwares and configurations.
 This package is a library, it MUST be used by a CLI or an API.
@@ -9,6 +11,8 @@ Dploy library contains the following classes:
   * **Infrastructure**: An inventory of every **Sites** own in this infrastructure.
   * **Site**: A group of **Hosts** that act in a common environment. It's sharing roles and variables.
   * **Host**: A host is a server configured and provisioned by [libdploy](http://slidesk.org/libdploy). This whole of resources provides services.
+
+Class diagram :
 
 ```
 ┌────────────────┐     owns    ┌──────┐    contains    ┌──────┐
