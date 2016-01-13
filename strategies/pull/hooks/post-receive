@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Starting Dploy pull strategy"
+
+# TODO

@@ -2,13 +2,13 @@
 # Author: Raphael Medaer <raphael.medaer@straightforward.me>
 # Date: December, 2015
 
-.PHONY: all roles lock site example clean
+.PHONY: all roles lock site infrastructure xample clean
 
 # Roles to generate
 ROLE_FIXTURES=fixture/roles/database fixture/roles/monitoring fixture/roles/example
 
 
-all: clean lint lock site example
+all: clean lint lock site infrastructure example
 
 lint:
 	jshint -c ../.jshintrc ../**/*.js
@@ -19,25 +19,37 @@ lock: outcome
 site: outcome/site roles
 	mocha -b site.js
 
+infrastructure: outcome/infrastructure/local outcome/infrastructure/bare ../strategies
+	mocha -b infrastructure.js
+
 example: outcome/example roles
 	node example.js
 
 roles: $(ROLE_FIXTURES)
 
 outcome:
-	mkdir -p outcome
+	mkdir outcome
 
 outcome/site: outcome
-	mkdir -p outcome/site
+	mkdir outcome/site
+
+outcome/infrastructure: outcome
+	mkdir outcome/infrastructure
+
+outcome/infrastructure/local: outcome/infrastructure
+	mkdir outcome/infrastructure/local
+
+outcome/infrastructure/bare: outcome/infrastructure
+	mkdir outcome/infrastructure/bare
 
 outcome/example: outcome
-	mkdir -p outcome/example
+	mkdir outcome/example
 
 fixture:
-	mkdir -p fixture
+	mkdir fixture
 
 fixture/roles: fixture
-	mkdir -p fixture/roles
+	mkdir fixture/roles
 
 # Generate Role fixtures
 $(ROLE_FIXTURES):
