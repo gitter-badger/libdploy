@@ -1,5 +1,7 @@
 # libdploy
 
+[![Join the chat at https://gitter.im/Slidesk/libdploy](https://badges.gitter.im/Slidesk/libdploy.svg)](https://gitter.im/Slidesk/libdploy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 _Project state:_ [![Build Status](https://travis-ci.org/Slidesk/libdploy.svg?branch=develop)](https://travis-ci.org/Slidesk/libdploy)
 
 This package contains Dploy library. It has been made in scope of Slidesk.
